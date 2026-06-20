@@ -107,6 +107,17 @@
       overflow-x: hidden;
     }
 
+    /* ===== MAIN CONTENT REVEAL ===== */
+    #main-content {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 1.1s ease, transform 1.1s ease;
+    }
+    #main-content.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ===== HERO ===== */
     .hero {
       text-align: center;
@@ -496,6 +507,8 @@
   <div class="pw-attempts" id="pw-attempts"></div>
 </div>
 
+<div id="main-content">
+
 <!-- ===== HERO ===== -->
 <div class="hero">
   <h1>Happy Father's Day, Daddy!</h1>
@@ -615,6 +628,8 @@
 
 <div style="height: 80px;"></div>
 
+</div> <!-- end #main-content -->
+
 <script>
 // =============================================
 // PASSWORD
@@ -634,7 +649,12 @@ function checkPassword() {
   if (val === 'worldsbestdad') {
     const screen = document.getElementById('password-screen');
     screen.classList.add('fade-out');
-    setTimeout(() => screen.remove(), 850);
+    setTimeout(() => {
+      screen.remove();
+      requestAnimationFrame(() => {
+        document.getElementById('main-content').classList.add('revealed');
+      });
+    }, 850);
   } else {
     pwAttempts++;
     const err = document.getElementById('pw-error');
