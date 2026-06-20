@@ -7,6 +7,98 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* ===== PASSWORD SCREEN ===== */
+    #password-screen {
+      position: fixed;
+      inset: 0;
+      background: #0d1b2a;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+      transition: opacity 0.8s ease;
+    }
+    #password-screen.fade-out { opacity: 0; pointer-events: none; }
+    .pw-title {
+      font-family: 'Georgia', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+    .pw-subtitle {
+      color: #89c4e1;
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+      font-style: italic;
+    }
+    .binary-display {
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.7rem, 2vw, 1rem);
+      color: #2ecc71;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(46,204,113,0.3);
+      border-radius: 12px;
+      padding: 24px 28px;
+      line-height: 2.2;
+      letter-spacing: 2px;
+      margin-bottom: 36px;
+      word-break: break-all;
+      max-width: 600px;
+    }
+    .pw-input-row {
+      display: flex;
+      gap: 10px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .pw-input {
+      flex: 1;
+      padding: 13px 18px;
+      border-radius: 50px;
+      border: 2px solid rgba(255,215,0,0.4);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      outline: none;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .pw-input:focus { border-color: #ffd700; }
+    .pw-submit {
+      padding: 13px 24px;
+      border-radius: 50px;
+      border: none;
+      background: #ffd700;
+      color: #0d1b2a;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: transform 0.1s;
+    }
+    .pw-submit:hover { transform: scale(1.05); }
+    .pw-submit:active { transform: scale(0.96); }
+    .pw-error {
+      margin-top: 16px;
+      color: #e74c3c;
+      font-family: 'Georgia', serif;
+      font-size: 0.9rem;
+      font-style: italic;
+      min-height: 22px;
+      transition: opacity 0.3s;
+    }
+    .pw-attempts {
+      margin-top: 8px;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.78rem;
+      font-family: 'Georgia', serif;
+    }
+
     body {
       font-family: 'Georgia', serif;
       background: #0d1b2a;
@@ -387,6 +479,23 @@
 </head>
 <body>
 
+<!-- ===== PASSWORD SCREEN ===== -->
+<div id="password-screen">
+  <div class="pw-title">🔒 Secret Access Required</div>
+  <div class="pw-subtitle">Decode the binary below to unlock your card</div>
+  <div class="binary-display">
+    01110111 01101111 01110010 01101100 01100100 01110011<br>
+    01100010 01100101 01110011 01110100 01100100 01100001<br>
+    01100100
+  </div>
+  <div class="pw-input-row">
+    <input class="pw-input" id="pw-input" type="text" placeholder="enter the password" autocomplete="off" />
+    <button class="pw-submit" onclick="checkPassword()">Unlock</button>
+  </div>
+  <div class="pw-error" id="pw-error"></div>
+  <div class="pw-attempts" id="pw-attempts"></div>
+</div>
+
 <!-- ===== HERO ===== -->
 <div class="hero">
   <h1>Happy Father's Day, Daddy!</h1>
@@ -507,6 +616,42 @@
 <div style="height: 80px;"></div>
 
 <script>
+// =============================================
+// PASSWORD
+// =============================================
+let pwAttempts = 0;
+const wrongMessages = [
+  "Nope! Keep decoding...",
+  "Not quite! Those 1s and 0s don't lie.",
+  "Wrong again! Dad would be disappointed.",
+  "Still no... are you even trying?",
+  "Really? That's your guess?",
+  "The binary is right there!!",
+];
+
+function checkPassword() {
+  const val = document.getElementById('pw-input').value.trim().toLowerCase();
+  if (val === 'worldsbestdad') {
+    const screen = document.getElementById('password-screen');
+    screen.classList.add('fade-out');
+    setTimeout(() => screen.remove(), 850);
+  } else {
+    pwAttempts++;
+    const err = document.getElementById('pw-error');
+    const att = document.getElementById('pw-attempts');
+    err.textContent = wrongMessages[Math.min(pwAttempts - 1, wrongMessages.length - 1)];
+    att.textContent = `${pwAttempts} failed attempt${pwAttempts > 1 ? 's' : ''}`;
+    const input = document.getElementById('pw-input');
+    input.style.borderColor = '#e74c3c';
+    input.value = '';
+    setTimeout(() => { input.style.borderColor = 'rgba(255,215,0,0.4)'; }, 800);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('password-screen')) checkPassword();
+});
+
 // =============================================
 // QUIZ SYSTEM
 // =============================================
