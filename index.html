@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Father's Day!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #0d1b2a;
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 70px 20px 50px;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 8vw, 5rem);
+      color: #ffd700;
+      letter-spacing: -1px;
+      animation: title-bounce 3s ease-in-out infinite;
+    }
+    @keyframes title-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: #89c4e1;
+      margin-top: 14px;
+      font-style: italic;
+    }
+    .hero-fine {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.78rem;
+      margin-top: 6px;
+    }
+    .stars-row {
+      font-size: 1.6rem;
+      margin-top: 18px;
+      letter-spacing: 6px;
+      animation: star-spin 4s linear infinite;
+      display: inline-block;
+    }
+    @keyframes star-spin {
+      0% { letter-spacing: 6px; }
+      50% { letter-spacing: 14px; }
+      100% { letter-spacing: 6px; }
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 44px 20px;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: #ffd700;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .section-hint {
+      text-align: center;
+      color: #89c4e1;
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,215,0,0.2);
+      margin: 0 auto;
+      max-width: 920px;
+    }
+
+    /* ===== QUIZ ===== */
+    .quiz-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 18px;
+      padding: 28px 28px 20px;
+      margin-bottom: 24px;
+    }
+    .quiz-q {
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+    .answers-arena {
+      position: relative;
+      height: 220px;
+      border: 2px dashed rgba(255,255,255,0.15);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.15);
+    }
+    .arena-label {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.2);
+      pointer-events: none;
+    }
+    .ans-btn {
+      position: absolute;
+      padding: 11px 22px;
+      border-radius: 50px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: left 0.08s ease-out, top 0.08s ease-out;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .ans-btn.wrong {
+      background: #c0392b;
+      color: #fff;
+    }
+    .ans-btn.wrong:hover { background: #e74c3c; }
+    .ans-btn.correct {
+      background: #27ae60;
+      color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .ans-btn.correct:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(39,174,96,0.6);
+    }
+    .ans-btn.done-correct {
+      animation: winner-glow 1s ease forwards;
+    }
+    @keyframes winner-glow {
+      0% { box-shadow: 0 0 0 rgba(39,174,96,0); }
+      50% { box-shadow: 0 0 40px rgba(39,174,96,0.9); transform: scale(1.15); }
+      100% { box-shadow: 0 0 20px rgba(39,174,96,0.5); transform: scale(1.08); }
+    }
+    .quiz-result {
+      min-height: 28px;
+      margin-top: 14px;
+      font-size: 1rem;
+      text-align: center;
+      font-style: italic;
+    }
+    .quiz-score-bar {
+      background: rgba(255,215,0,0.1);
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+      border: 1px solid rgba(255,215,0,0.3);
+      margin-top: 10px;
+    }
+    .quiz-score-bar span { color: #ffd700; font-size: 1.1rem; }
+
+    /* ===== JOKE MACHINE ===== */
+    .joke-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 18px;
+      padding: 40px 36px;
+      text-align: center;
+    }
+    .joke-text {
+      font-size: 1.2rem;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      transition: opacity 0.25s;
+    }
+    .joke-groan {
+      margin-top: 18px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.35);
+      min-height: 20px;
+    }
+    .btn-gold {
+      background: #ffd700;
+      color: #0d1b2a;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn-gold:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 22px rgba(255,215,0,0.45);
+    }
+    .btn-gold:active { transform: scale(0.97); }
+
+    /* ===== HUG COUNTER ===== */
+    .hug-section { text-align: center; }
+    .hug-count {
+      font-size: 5.5rem;
+      font-weight: bold;
+      color: #ffd700;
+      display: block;
+      margin: 16px 0;
+      line-height: 1;
+      transition: transform 0.1s;
+    }
+    .hug-count.bump { transform: scale(1.2); }
+    .hug-btn {
+      background: #c0392b;
+      border: none;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      font-size: 4.5rem;
+      cursor: pointer;
+      animation: heartbeat 1.8s ease-in-out infinite;
+      line-height: 160px;
+      display: inline-block;
+      transition: transform 0.08s;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.12); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.12); }
+      70% { transform: scale(1); }
+    }
+    .hug-btn:hover { animation: none; transform: scale(1.08); }
+    .hug-btn:active { transform: scale(0.9) !important; animation: none; }
+    .hug-message {
+      margin-top: 18px;
+      font-size: 1rem;
+      color: #89c4e1;
+      font-style: italic;
+      min-height: 24px;
+      transition: opacity 0.3s;
+    }
+    .hug-milestone {
+      display: inline-block;
+      background: rgba(255,215,0,0.15);
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 30px;
+      padding: 6px 20px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #ffd700;
+      min-height: 32px;
+    }
+
+    /* ===== DAD STATS ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 18px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 16px;
+      padding: 26px 20px;
+      text-align: center;
+    }
+    .stat-card:hover {
+      border-color: rgba(255,215,0,0.5);
+      background: rgba(255,255,255,0.07);
+    }
+    .stat-num {
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: #ffd700;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: #89c4e1;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ===== SUPER DAD GAME ===== */
+    .obstacle-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 18px;
+      padding: 28px;
+      text-align: center;
+    }
+    .game-area {
+      position: relative;
+      height: 260px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+      margin: 20px 0;
+      cursor: none;
+    }
+    .chore-item {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: none;
+      user-select: none;
+      line-height: 1;
+    }
+    .game-cursor {
+      position: absolute;
+      font-size: 2.2rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: left 0.05s, top 0.05s;
+      z-index: 10;
+    }
+    .game-hud {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      color: #89c4e1;
+      margin-bottom: 8px;
+    }
+    .game-hud span { color: #ffd700; font-weight: bold; }
+
+    /* ===== MESSAGE ===== */
+    .message-box {
+      background: rgba(255,215,0,0.07);
+      border: 2px solid rgba(255,215,0,0.5);
+      border-radius: 22px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .message-box p {
+      font-size: 1.2rem;
+      line-height: 1.9;
+      color: #fff;
+    }
+    .message-sig {
+      color: #ffd700;
+      font-size: 1.5rem;
+      margin-top: 28px;
+      display: block;
+    }
+
+    /* ===== FLOATIES & CONFETTI ===== */
+    .floaty {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: float-up linear forwards;
+      z-index: 999;
+    }
+    @keyframes float-up {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+    .confetti-bit {
+      position: fixed;
+      width: 8px;
+      height: 16px;
+      top: -20px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      border-radius: 2px;
+      z-index: 9999;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotateX(0deg) rotateZ(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotateX(720deg) rotateZ(540deg); opacity: 0; }
+    }
+    @media (max-width: 600px) {
+      .answers-arena { height: 260px; }
+      .message-box { padding: 30px 20px; }
+      .message-box p { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <h1>Happy Father's Day, Daddy!</h1>
+  <p class="hero-sub">You're the best dad in the entire known universe*</p>
+  <p class="hero-fine">*study conducted by us. very rigorous. very scientific.</p>
+  <div><span class="stars-row">⭐ ⭐ ⭐</span></div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== QUIZ ===== -->
+<section>
+  <h2 class="section-title">🎯 The Official Dad Quiz</h2>
+  <p class="section-hint">The wrong answers will try to escape your cursor. The right answer stays put — like Dad at his favourite armchair.</p>
+  <div id="quiz-area"></div>
+  <div class="quiz-score-bar" id="score-bar" style="display:none">
+    <span id="score-text">You got them all right! Clearly you know your dad well. 🏆</span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== DAD JOKE MACHINE ===== -->
+<section>
+  <h2 class="section-title">😂 The Dad Joke Machine™</h2>
+  <p class="section-hint">Powered entirely by genuine Dad Energy.</p>
+  <div class="joke-box">
+    <div class="joke-text" id="joke-display">Hit the button to hear a certified Dad Joke™</div>
+    <button class="btn-gold" onclick="nextJoke()">Tell me a joke, Dad! 🎤</button>
+    <div class="joke-groan" id="joke-groan"></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== HUG COUNTER ===== -->
+<section class="hug-section">
+  <h2 class="section-title">🤗 Send Dad a Hug!</h2>
+  <p class="section-hint">Each click is a hug. No limit. Go wild.</p>
+  <span class="hug-count" id="hug-count">0</span>
+  <br>
+  <button class="hug-btn" id="hug-btn" onclick="sendHug()" aria-label="Send a hug">🫂</button>
+  <div class="hug-message" id="hug-message">Click to send your first hug!</div>
+  <div class="hug-milestone" id="hug-milestone"></div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== SUPER DAD CHORES GAME ===== -->
+<section>
+  <h2 class="section-title">🦸 Super Dad: Chore Catcher</h2>
+  <p class="section-hint">Move your mouse (or tap on mobile) to collect falling chores. Dad does them all — effortlessly.</p>
+  <div class="obstacle-box">
+    <div class="game-hud">
+      <div>Chores done: <span id="chore-count">0</span></div>
+      <div>Time left: <span id="chore-timer">30</span>s</div>
+    </div>
+    <div class="game-area" id="game-area">
+      <div class="game-cursor" id="game-cursor">🦸</div>
+    </div>
+    <div style="text-align:center; margin-top: 6px;">
+      <button class="btn-gold" id="game-btn" onclick="startGame()" style="padding: 10px 28px; font-size: 0.95rem;">Start Game</button>
+      <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-top: 10px;" id="game-result"></p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== DAD STATS ===== -->
+<section>
+  <h2 class="section-title">📊 Official Dad Statistics</h2>
+  <p class="section-hint">Verified by the Bureau of Dad Science (founded 1987).</p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-num" id="stat-jokes">0</span>
+      <div class="stat-label">Dad jokes told (minimum estimate)</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">∞</span>
+      <div class="stat-label">Times said "because I said so"</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">1</span>
+      <div class="stat-label">Perfect BBQ technique (mastered)</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">0</span>
+      <div class="stat-label">Times NOT fallen asleep on the couch</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">100%</span>
+      <div class="stat-label">Hug success rate when needed</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">💛</span>
+      <div class="stat-label">Love level: immeasurable</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== MESSAGE ===== -->
+<section>
+  <div class="message-box">
+    <p>
+      Happy Father's Day, Daddy!<br><br>
+      Thank you for making me laugh.<br>
+      Thank you for working hard.<br>
+      Thank you for being there when I needed help.<br><br>
+      Love you! ❤️<br><br>
+      <em style="font-size: 1rem; color: rgba(255,255,255,0.6);">P.S. Thank you for teaching me Claude Code.</em>
+    </p>
+  </div>
+</section>
+
+<div style="height: 80px;"></div>
+
+<script>
+// =============================================
+// QUIZ SYSTEM
+// =============================================
+const questions = [
+  {
+    q: "Who is the greatest dad in the entire world?",
+    correct: { text: "My Dad! Obviously!", left: 38, top: 145 },
+    wrong: [
+      { text: "Some random bloke", left: 55, top: 30 },
+      { text: "A TV sitcom dad", left: 5, top: 30 }
+    ],
+    win: "🏆 Correct! Not even close of a competition!"
+  },
+  {
+    q: "How many Dad jokes are too many?",
+    correct: { text: "That's not a real number", left: 32, top: 145 },
+    wrong: [
+      { text: "Ten is more than enough", left: 52, top: 30 },
+      { text: "Maybe like... five?", left: 4, top: 30 }
+    ],
+    win: "✅ Right! Dad jokes are infinite and eternal."
+  },
+  {
+    q: "What is Dad's #1 superpower?",
+    correct: { text: "Everything, obviously", left: 36, top: 145 },
+    wrong: [
+      { text: "Falling asleep instantly", left: 55, top: 30 },
+      { text: "Just the BBQ", left: 3, top: 30 }
+    ],
+    win: "💪 Spot on! Everything. All of it."
+  }
+];
+
+let answered = [false, false, false];
+const quizArea = document.getElementById('quiz-area');
+
+function buildQuiz() {
+  quizArea.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+
+    const qLabel = document.createElement('div');
+    qLabel.className = 'quiz-q';
+    qLabel.textContent = `Q${qi + 1}: ${q.q}`;
+    card.appendChild(qLabel);
+
+    const arena = document.createElement('div');
+    arena.className = 'answers-arena';
+    arena.id = `arena-${qi}`;
+
+    const hint = document.createElement('div');
+    hint.className = 'arena-label';
+    hint.textContent = 'hover near wrong answers...';
+    arena.appendChild(hint);
+
+    // Correct answer button
+    const cb = makeBtn(q.correct.text, 'correct', q.correct.left, q.correct.top);
+    cb.addEventListener('click', () => selectCorrect(qi, cb));
+    arena.appendChild(cb);
+
+    // Wrong answer buttons
+    q.wrong.forEach(w => {
+      const wb = makeBtn(w.text, 'wrong', w.left, w.top);
+      wb.addEventListener('click', () => wrongClicked(wb, arena));
+      arena.appendChild(wb);
+    });
+
+    const result = document.createElement('div');
+    result.className = 'quiz-result';
+    result.id = `result-${qi}`;
+    card.appendChild(arena);
+    card.appendChild(result);
+    quizArea.appendChild(card);
+  });
+}
+
+function makeBtn(text, cls, leftPct, topPx) {
+  const b = document.createElement('button');
+  b.className = `ans-btn ${cls}`;
+  b.textContent = text;
+  b.style.left = leftPct + '%';
+  b.style.top = topPx + 'px';
+  return b;
+}
+
+function wrongClicked(btn, arena) {
+  // On click/tap, jump to a new random spot
+  flee(btn, arena, null, true);
+}
+
+function selectCorrect(qi, btn) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  btn.classList.add('done-correct');
+  btn.style.cursor = 'default';
+
+  const arena = document.getElementById(`arena-${qi}`);
+  arena.querySelectorAll('.ans-btn.wrong').forEach(b => {
+    b.style.opacity = '0.25';
+    b.style.cursor = 'default';
+    b.style.pointerEvents = 'none';
+  });
+
+  const result = document.getElementById(`result-${qi}`);
+  result.textContent = questions[qi].win;
+  result.style.color = '#2ecc71';
+
+  spawnFloat(['🎉','⭐','💛'][qi], 60 + qi * 20);
+
+  if (answered.every(Boolean)) {
+    document.getElementById('score-bar').style.display = 'block';
+    setTimeout(() => confetti(60), 300);
+  }
+}
+
+// Mouse flee logic
+document.addEventListener('mousemove', e => {
+  document.querySelectorAll('.ans-btn.wrong').forEach(btn => {
+    const arena = btn.closest('.answers-arena');
+    if (!arena) return;
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 160) {
+      flee(btn, arena, { dx, dy, dist }, false);
+    }
+  });
+});
+
+function flee(btn, arena, mouse, forceJump) {
+  const arenaRect = arena.getBoundingClientRect();
+  const btnRect = btn.getBoundingClientRect();
+  const btnW = btnRect.width;
+  const btnH = btnRect.height;
+
+  let angle, speed;
+
+  if (forceJump || !mouse) {
+    angle = Math.random() * Math.PI * 2;
+    speed = 80;
+  } else {
+    angle = Math.atan2(mouse.dy, mouse.dx);
+    speed = ((160 - mouse.dist) / 160) * 120;
+  }
+
+  let curLeft = parseFloat(btn.style.left);
+  let curTop = parseFloat(btn.style.top);
+
+  let newLeft = curLeft - (Math.cos(angle) * speed * 0.18);
+  let newTop = curTop - (Math.sin(angle) * speed * 0.5);
+
+  const maxLeft = ((arenaRect.width - btnW - 8) / arenaRect.width) * 100;
+  const maxTop = arenaRect.height - btnH - 10;
+
+  newLeft = Math.max(0, Math.min(maxLeft, newLeft));
+  newTop = Math.max(8, Math.min(maxTop, newTop));
+
+  btn.style.left = newLeft + '%';
+  btn.style.top = newTop + 'px';
+}
+
+buildQuiz();
+
+// =============================================
+// DAD JOKES
+// =============================================
+const jokes = [
+  ["Why don't scientists trust atoms?", "Because they make up everything. Kind of like Dad's fishing stories."],
+  ["I'm reading a book about anti-gravity.", "It's impossible to put down. Just like Dad on the couch."],
+  ["What do you call cheese that isn't yours?", "Nacho cheese. Dad has told us this 47 times. Still laughs every time."],
+  ["Why did the scarecrow win an award?", "He was outstanding in his field. Just like Dad — in every field."],
+  ["I told my kids I'd make a car out of spaghetti.", "You should've seen their faces when I drove pasta."],
+  ["What do you call a fish without eyes?", "A fsh. Dad laughed until he cried."],
+  ["How do you organize a space party?", "You planet. Dad has been using this one since before we were born."],
+  ["Why can't you hear a pterodactyl use the bathroom?", "Because the P is silent. Dad is STILL proud of this one."],
+  ["What do you call a sleeping dinosaur?", "A dino-snore. Dad or the dinosaur — impossible to say."],
+  ["I only know 25 letters of the alphabet.", "I don't know Y. Dad considers this peak comedy."],
+  ["Why do fathers take extra socks golfing?", "In case they get a hole in one!"],
+  ["What do you call a bear with no teeth?", "A gummy bear. Dad told this at Grandma's birthday. Twice."],
+];
+
+const groans = ["😂 Classic!", "🤦 Oh Dad...", "😩 We love you anyway.", "👴 That's very Dad of you.", "🫠 Outstanding.", "We asked for this.", "Science cannot explain how you're this funny."];
+
+let jokeIdx = -1;
+function nextJoke() {
+  jokeIdx = (jokeIdx + 1) % jokes.length;
+  const [setup, punchline] = jokes[jokeIdx];
+  const el = document.getElementById('joke-display');
+  const groan = document.getElementById('joke-groan');
+  el.style.opacity = 0;
+  setTimeout(() => {
+    el.innerHTML = `<span><em>"${setup}"</em><br><br>${punchline}</span>`;
+    el.style.opacity = 1;
+    groan.textContent = groans[jokeIdx % groans.length];
+  }, 240);
+}
+
+// =============================================
+// HUG COUNTER
+// =============================================
+let hugs = 0;
+const hugMsgs = [
+  [1,  "That's the first! It's a good one."],
+  [5,  "Five hugs! Dad is smiling."],
+  [10, "Ten! He's tearing up."],
+  [20, "Twenty hugs. He's definitely crying now."],
+  [50, "Fifty! You're his favourite. Shh."],
+  [100,"100 hugs! We need a bigger counter."],
+  [200,"This is getting emotional. Keep going."],
+  [500,"500 hugs. Dad is overwhelmed in the best way."],
+];
+const hugQuips = [
+  "Sending the hug now...",
+  "Dad feels it all the way from here.",
+  "He's putting down the remote for this.",
+  "A hug for every grey hair you gave him.",
+  "And one more for good measure.",
+];
+const milestones = [10, 20, 50, 100, 200, 500];
+const milestoneTexts = ["🎉 10 hugs!", "🌟 20 hugs!", "🏅 50 hugs!", "🥇 100 hugs — legend!", "💎 200 hugs!", "👑 500 HUGS!!!"];
+
+function sendHug() {
+  hugs++;
+  const el = document.getElementById('hug-count');
+  el.textContent = hugs.toLocaleString();
+  el.classList.add('bump');
+  setTimeout(() => el.classList.remove('bump'), 120);
+
+  const msgEl = document.getElementById('hug-message');
+  msgEl.textContent = hugQuips[Math.floor(Math.random() * hugQuips.length)];
+
+  for (const [n, msg] of hugMsgs) {
+    if (hugs === n) {
+      document.getElementById('hug-milestone').textContent = msg;
+    }
+  }
+
+  const milestoneIdx = milestones.indexOf(hugs);
+  if (milestoneIdx !== -1) {
+    document.getElementById('hug-milestone').textContent = milestoneTexts[milestoneIdx];
+    confetti(25);
+  }
+
+  spawnFloat(['🫂','💛','❤️'][hugs % 3], 50 + Math.random() * 40);
+}
+
+// =============================================
+// CHORE CATCHER GAME
+// =============================================
+const chores = ['🧹','🍽️','🔧','🌿','🛒','🧺','🚗','💡','📦','🪣'];
+let gameRunning = false;
+let choreCount = 0;
+let timeLeft = 30;
+let timerInterval = null;
+let spawnInterval = null;
+
+function startGame() {
+  if (gameRunning) return;
+  gameRunning = true;
+  choreCount = 0;
+  timeLeft = 30;
+  document.getElementById('chore-count').textContent = 0;
+  document.getElementById('chore-timer').textContent = 30;
+  document.getElementById('game-result').textContent = '';
+  document.getElementById('game-btn').disabled = true;
+  document.getElementById('game-btn').textContent = 'Game in progress...';
+
+  const area = document.getElementById('game-area');
+  area.querySelectorAll('.chore-item').forEach(e => e.remove());
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById('chore-timer').textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+
+  spawnInterval = setInterval(spawnChore, 600);
+}
+
+function spawnChore() {
+  const area = document.getElementById('game-area');
+  const aW = area.clientWidth;
+  const aH = area.clientHeight;
+  const chore = document.createElement('div');
+  chore.className = 'chore-item';
+  chore.textContent = chores[Math.floor(Math.random() * chores.length)];
+  const startX = Math.random() * (aW - 48);
+  chore.style.left = startX + 'px';
+  chore.style.top = '-40px';
+  area.appendChild(chore);
+
+  const duration = 2200 + Math.random() * 1800;
+  let start = null;
+  const endY = aH + 10;
+
+  function animate(ts) {
+    if (!start) start = ts;
+    const progress = (ts - start) / duration;
+    if (progress >= 1) { chore.remove(); return; }
+    chore.style.top = (progress * endY) + 'px';
+    if (gameRunning) requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  chore.addEventListener('click', () => {
+    if (!gameRunning) return;
+    choreCount++;
+    document.getElementById('chore-count').textContent = choreCount;
+    chore.style.transition = 'transform 0.1s, opacity 0.1s';
+    chore.style.transform = 'scale(2)';
+    chore.style.opacity = '0';
+    setTimeout(() => chore.remove(), 150);
+  });
+
+  chore.addEventListener('touchstart', e => {
+    e.preventDefault();
+    chore.click();
+  }, { passive: false });
+}
+
+function endGame() {
+  gameRunning = false;
+  clearInterval(timerInterval);
+  clearInterval(spawnInterval);
+  const area = document.getElementById('game-area');
+  area.querySelectorAll('.chore-item').forEach(e => e.remove());
+
+  const btn = document.getElementById('game-btn');
+  btn.disabled = false;
+  btn.textContent = 'Play Again';
+
+  const msgs = [
+    [0,  "Dad does this many chores daily, without being asked."],
+    [5,  "5 chores! A solid start. Dad does this before breakfast."],
+    [10, "10! Getting there. Dad's already done 30 before lunch."],
+    [20, "20 chores! Impressive! Almost as fast as Dad."],
+    [30, "30! You might be part Dad."],
+    [999,"LEGENDARY. You ARE Dad."],
+  ];
+  const msg = msgs.slice().reverse().find(([n]) => choreCount >= n)?.[1] || msgs[0][1];
+  document.getElementById('game-result').textContent = `You caught ${choreCount} chores! ${msg}`;
+  if (choreCount >= 15) confetti(30);
+}
+
+// Mouse/touch tracking for game cursor
+const gameArea = document.getElementById('game-area');
+const gameCursor = document.getElementById('game-cursor');
+
+gameArea.addEventListener('mousemove', e => {
+  const rect = gameArea.getBoundingClientRect();
+  gameCursor.style.left = (e.clientX - rect.left) + 'px';
+  gameCursor.style.top = (e.clientY - rect.top) + 'px';
+});
+
+gameArea.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const rect = gameArea.getBoundingClientRect();
+  const touch = e.touches[0];
+  gameCursor.style.left = (touch.clientX - rect.left) + 'px';
+  gameCursor.style.top = (touch.clientY - rect.top) + 'px';
+}, { passive: false });
+
+// =============================================
+// CONFETTI
+// =============================================
+function confetti(n) {
+  const colors = ['#ffd700','#e74c3c','#27ae60','#3498db','#9b59b6','#e67e22','#1abc9c','#f39c12'];
+  for (let i = 0; i < n; i++) {
+    setTimeout(() => {
+      const bit = document.createElement('div');
+      bit.className = 'confetti-bit';
+      bit.style.left = Math.random() * 100 + 'vw';
+      bit.style.background = colors[Math.floor(Math.random() * colors.length)];
+      bit.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+      bit.style.width = (6 + Math.random() * 8) + 'px';
+      bit.style.height = (12 + Math.random() * 12) + 'px';
+      bit.style.transform = `rotate(${Math.random() * 360}deg)`;
+      document.body.appendChild(bit);
+      setTimeout(() => bit.remove(), 6000);
+    }, i * 40);
+  }
+}
+
+function spawnFloat(emoji, leftPct) {
+  const el = document.createElement('div');
+  el.className = 'floaty';
+  el.textContent = emoji;
+  el.style.left = (leftPct ?? (20 + Math.random() * 60)) + (leftPct ? 'px' : 'vw');
+  el.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 5000);
+}
+
+// =============================================
+// ANIMATED STAT COUNTER
+// =============================================
+function animateCounter(el, target, ms) {
+  let start = null;
+  const step = ts => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / ms, 1);
+    el.textContent = Math.floor(p * target).toLocaleString();
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statEl = document.getElementById('stat-jokes');
+const obs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    animateCounter(statEl, 10847, 2200);
+    obs.disconnect();
+  }
+});
+obs.observe(statEl);
+
+// Opening floaties
+[['⭐', 400], ['💛', 900], ['🎉', 1400], ['⭐', 1900]].forEach(([e, t]) => {
+  setTimeout(() => spawnFloat(e, 20 + Math.random() * 60), t);
+});
+</script>
+</body>
+</html>
